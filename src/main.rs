@@ -1,3 +1,8 @@
+use std::{
+    fs::File,
+    io::{self, Write},
+    os::unix::io::FromRawFd,
+};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 #[tokio::main(flavor = "current_thread")]
@@ -13,7 +18,7 @@ async fn main() {
 
 async fn run_server() {
     // Bind the listener to the address
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:6379").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("::0:9098").await.unwrap();
     
     loop {
         // The second item contains the IP and port of the new connection.
@@ -26,17 +31,18 @@ async fn run_server() {
 async fn process(mut socket: tokio::net::TcpStream) {
     let addr = socket.peer_addr().unwrap();
     println!("connected to {:?}", addr);
-    let mut buf = [0u8; 128];
+    let mut buf = [0u8; 8];
     loop {
+        buf = [0u8; 8];
         let read = socket.read(&mut buf[..]).await;
         dbg!(&read);
         dbg!(std::str::from_utf8(&buf[..]));
-        let write = socket.write(&buf);
-        //dbg!(write);
-        if read.unwrap_or(0) < 128 { 
+        let write = socket.write(&buf).await;
+
+        if read.unwrap_or(0) < 128 && false { 
             socket.flush();
-            std::mem::drop(socket);
-            println!("socket {:?} is dropped", addr);
+            //std::mem::drop(socket);
+            println!("socket {:?} will be dropped", addr);
             break; 
         }
     }
@@ -44,7 +50,7 @@ async fn process(mut socket: tokio::net::TcpStream) {
 }
 
 async fn run_client() {
-    let mut stream = tokio::net::TcpStream::connect("127.0.0.1:6379").await.unwrap();
+    let mut stream = tokio::net::TcpStream::connect("127.0.0.1:9098").await.unwrap();
     let write = stream.write("afrwahgreggreshtrshtrhtrdhtrdhtrhthtresdgtrhtrdhtrsh".as_bytes());
     dbg!(write);
 }
