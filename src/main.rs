@@ -37,11 +37,16 @@ async fn process(mut socket: tokio::net::TcpStream) {
         let read = socket.read(&mut buf[..]).await;
         dbg!(&read);
         dbg!(std::str::from_utf8(&buf[..]));
-        let write = socket.write(&buf).await;
+
+        let write = socket.write_all(&buf).await;
+        match write {
+            Err(_) => { break; },
+            Ok(_) => {},
+        }
 
         if read.unwrap_or(0) == 0 { 
             socket.flush();
-            //std::mem::drop(socket);
+            std::mem::drop(socket);
             println!("socket {:?} will be dropped", addr);
             break; 
         }
