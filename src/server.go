@@ -7,8 +7,7 @@ import (
     "os"
     "io"
     "bufio"
-    "encoding/binary"
-    "math"
+    "strconv"
 )
 
 func main() {
@@ -34,23 +33,24 @@ func handleConnection(conn net.Conn) {
 
 	buf := make([]byte, 1024)
     for true {
-        n, err := io.ReadFull(bufio.NewReader(conn), buf)
+        _, err := io.ReadFull(bufio.NewReader(conn), buf)
         if err != nil {
             return
         }
+        sum := 0.0
         is_div := true;
-        for i := 0; i < len(buf); i += 8 {
-            v := math.Float64frombits(binary.LittleEndian.Uint64(buf[i : i+8]))
+        for i := 0; i < len(buf); i += 1 {
+            v := float64(buf[i])
             if is_div {
                 v /= 3.14
             } else {
                 v *= 2.71
             }
             is_div = !is_div
-            binary.LittleEndian.PutUint64(buf[i:i+8], math.Float64bits(v))
+            sum += v
         }
 
-        _, err = conn.Write(buf[:n])
+        _, err = conn.Write([]byte(strconv.FormatFloat(sum / 1024, 'f', -1, 64) + "\n"))
         if err != nil {
             return
         }

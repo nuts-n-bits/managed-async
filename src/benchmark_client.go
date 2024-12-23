@@ -6,11 +6,11 @@ import (
     "net"
     "os"
 	"log"
-	"io"
 	"strconv"
 	"time"
 	"bufio"
-	"math/rand"
+	"strings"
+	// "math/rand"
 )
 
 func main() {
@@ -30,8 +30,8 @@ func main() {
 	// if err != nil  {
 	// 	log.Fatal(err)
 	// }
-	data := make([]byte, 1024)
-	rand.Read(data)
+	data := []byte(strings.Repeat("a", 1024))//make([]byte, 1024)
+	// rand.Read(data)
 	c := make(chan int)
     for i := 0; i < num_threads; i++ {
 		go createConnection(data, num_times, c)
@@ -53,7 +53,6 @@ func createConnection(data []byte, num_times int, c chan int) {
         log.Fatal(err)
     }
     defer conn.Close()
-	echo_data := make([]byte, len(data))
 	reader := bufio.NewReader(conn)
 	cumulative_latency := 0
 	for i := 0; i < num_times; i++ {
@@ -62,10 +61,11 @@ func createConnection(data []byte, num_times int, c chan int) {
 		if err != nil  {
 			log.Fatal(err)
 		}
-        _, err := io.ReadFull(reader, echo_data)
+        echo_data, err := reader.ReadString('\n')
 		if err != nil {
 			log.Fatal(err)
 		}
+		println(echo_data)
 		cumulative_latency += int(time.Since(s))
 		time.Sleep(1 * time.Second)
 	}
