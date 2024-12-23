@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::{
     fs::File,
     io::{self, Write},
@@ -58,4 +60,17 @@ async fn run_client() {
     let mut stream = tokio::net::TcpStream::connect("127.0.0.1:9098").await.unwrap();
     let write = stream.write("afrwahgreggreshtrshtrhtrdhtrdhtrhthtresdgtrhtrdhtrsh".as_bytes());
     dbg!(write);
+}
+
+const PI: f64 = 3.14;
+const E: f64 = 2.71;
+
+fn work(incoming_bytes: [u8; 1024]) -> [f64; 1024] {
+        let result = [0f64; 1024];
+        for (i, elem) in incoming_bytes.iter().enumerate() {
+                
+        }
+
+        ;
+
 }
