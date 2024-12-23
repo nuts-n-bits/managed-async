@@ -45,7 +45,7 @@ async fn process(mut socket: tokio::net::TcpStream) {
             break;
         }
 
-        let returnable = work(&buf);
+        let returnable = average(work(&buf)).to_string();
 
 
         let write = socket.write_all(&buf).await;
@@ -81,4 +81,12 @@ fn work(incoming_bytes: &[u8; 1024]) -> [f64; 1024] {
         }
     }
     result
+}
+
+fn average(ns: [f64; 1024]) -> f64 {
+    let mut sum = 0f64;
+    for i in ns {
+        sum += i 
+    }
+    return sum / 1024f64;
 }
