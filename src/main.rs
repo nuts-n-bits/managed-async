@@ -48,7 +48,7 @@ async fn process(mut socket: tokio::net::TcpStream) {
         let returnable = average(work(&buf)).to_string();
 
 
-        let write = socket.write_all(&buf).await;
+        let write = socket.write_all(returnable.as_bytes()).await;
         match write {
             Err(_) => {
                 break;
