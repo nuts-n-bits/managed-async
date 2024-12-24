@@ -45,7 +45,7 @@ async fn process(mut socket: tokio::net::TcpStream) {
             break;
         }
 
-        let returnable = average(work(&buf)).to_string() + "\n";
+        let returnable = compute_average(&buf).to_string() + "\n";
 
 
         let write = socket.write_all(returnable.as_bytes()).await;
@@ -71,22 +71,19 @@ async fn run_client() {
 const PI: f64 = 3.14;
 const E: f64 = 2.71;
 
-fn work(incoming_bytes: &[u8; 1024]) -> [f64; 1024] {
-    let mut result = [0f64; 1024];
-    for (i, elem) in incoming_bytes.iter().enumerate() {
-        if i & 0b1 == 0 {
-            result[i] = (*elem as f64) * PI;
-        } else {
-            result[i] = (*elem as f64) / E;
-        }
-    }
-    result
-}
-
-fn average(ns: [f64; 1024]) -> f64 {
+fn compute_average(buf: &[u8; 1024]) -> f64 {
     let mut sum = 0f64;
-    for i in ns {
-        sum += i 
+    let mut is_div = true;
+    for i in 0..buf.len() {
+        let mut v = buf[i] as f64;
+        if is_div { 
+            v /= PI 
+        }
+        else { 
+            v *= E 
+        }
+        is_div = !is_div;
+        sum += v;
     }
     return sum / 1024f64;
 }
