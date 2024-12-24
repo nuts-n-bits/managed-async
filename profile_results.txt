@@ -1,0 +1,22 @@
+rust std::io::write_all        14%  40R
+     std::io::read_exact       8%   23R
+     formatting                2%   6R
+     work                      35%  100R
+     tokio::runtime::scheduler 24%  69R
+
+go   alloc               6%    26R  74R
+     io.ReadAtLeast      12%   53R  151R
+     net.Write           27%   118R 337R
+     formatting float    2%    9R   26R
+     work                8%    35R  100R
+     locked waiting      4%    18R  51R
+     runtime.schedule    12%   53R  151R
+     GC                  23%   101R 289R
+
+rust user-level overhead = 40 + 23 + 6 = 69%
+rust tokio overhead = 69%
+total overhead = 138%
+
+go user-level overhead = 74 + 151 + 337 + 26 = 588%
+go runtime overhead (gc + sched + waiting) = 289 + 151 + 51 = 491%
+total overhead = 1079%
