@@ -8,9 +8,11 @@ import (
     "io"
     "bufio"
     "strconv"
+    "runtime"
 )
 
 func main() {
+    runtime.GOMAXPROCS(1)
     listener, err := net.Listen("tcp", ":9098")
     if err != nil {
         fmt.Println("Error starting server:", err)
