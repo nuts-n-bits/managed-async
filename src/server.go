@@ -28,6 +28,22 @@ func main() {
     }
 }
 
+func computeAverage(buf []byte) float64 {
+    sum := 0.0
+    is_div := true;
+    for i := 0; i < len(buf); i += 1 {
+        v := float64(buf[i])
+        if is_div {
+            v /= 3.14
+        } else {
+            v *= 2.71
+        }
+        is_div = !is_div
+        sum += v
+    }
+    return sum / 1024;
+}
+
 func handleConnection(conn net.Conn) {
     defer conn.Close()
 
@@ -37,20 +53,9 @@ func handleConnection(conn net.Conn) {
         if err != nil {
             return
         }
-        sum := 0.0
-        is_div := true;
-        for i := 0; i < len(buf); i += 1 {
-            v := float64(buf[i])
-            if is_div {
-                v /= 3.14
-            } else {
-                v *= 2.71
-            }
-            is_div = !is_div
-            sum += v
-        }
+        avg := computeAverage(buf);
 
-        _, err = conn.Write([]byte(strconv.FormatFloat(sum / 1024, 'f', -1, 64) + "\n"))
+        _, err = conn.Write([]byte(strconv.FormatFloat(avg, 'f', -1, 64) + "\n"))
         if err != nil {
             return
         }

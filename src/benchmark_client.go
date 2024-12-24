@@ -67,7 +67,7 @@ func createConnection(data []byte, num_times int, c chan int) {
 		}
 		println(echo_data)
 		cumulative_latency += int(time.Since(s))
-		time.Sleep(1 * time.Second)
+		//time.Sleep(1 * time.Second)
 	}
     c <- cumulative_latency
 }
