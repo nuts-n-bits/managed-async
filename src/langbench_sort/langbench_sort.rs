@@ -1,0 +1,125 @@
+
+fn assert(cond: bool) {
+	if !cond {
+		panic!("badness");
+	}
+}
+
+fn wmerge(arr: &mut Vec<String>, mut lo1: usize, hi1: usize,  mut lo2: usize, hi2: usize, mut w: usize) {
+	while lo1 < hi1 && lo2 < hi2 {
+		let mut lo_old = 0;
+		if arr[lo1] <= arr[lo2] {
+			lo_old = lo1;
+			lo1 += 1;
+		} else {
+			lo_old = lo2;
+			lo2 += 1;
+		}
+		let w_old = w;
+		w += 1;
+		arr.swap(w_old, lo_old);
+	}
+	while lo1 < hi1 {
+		let w_old = w;
+		w += 1;
+		let lo_old = lo1;
+		lo1 += 1;
+		arr.swap(w_old, lo_old);
+	}
+	while lo2 < hi2 {
+		let w_old = w;
+		w += 1;
+		let lo_old = lo2;
+		lo2 += 1;
+		arr.swap(w_old, lo_old);
+	}
+}
+
+fn wsort(arr: &mut Vec<String>, lo: usize, hi: usize, w: usize) {
+	if hi - lo > 1 {
+		let m = (lo + hi) / 2;
+		imsort(arr, lo, m);
+		imsort(arr, m, hi);
+		wmerge(arr, lo, m, m, hi, w);
+	} else if lo != hi {
+		arr.swap(lo, w)
+	}
+}
+
+fn imsort(arr: &mut Vec<String>, lo: usize, hi: usize) {
+	if (hi - lo) > 1 {
+		let m = (lo + hi) / 2;
+		let mut w = lo + hi - m;
+		wsort(arr, lo, m, w);
+		while w - lo > 2 {
+			let n = w;
+			w = (lo + n + 1) / 2;
+			wsort(arr, w, n, lo);
+			wmerge(arr, lo, lo + n - w, n, hi, w);
+		}
+		for i in w..lo {
+			let mut j = i;
+			while j < hi && arr[j] < arr[j - 1] {
+				arr.swap(j, j - 1);
+				j += 1;
+			}
+		}
+	}
+}
+
+fn permute(l: &mut Vec<Vec<u8>>, n: usize, m: usize, pos: usize) {
+	if n == 0 {
+		return;
+	}
+	let size = 1;
+	for i in 0..n-1 {
+		size *= m;
+	}
+	for i in 0..m {
+		for j in 0..size {
+			l[i * size + j][pos] = ('z' as usize - i) as u8;
+		}
+		permute(&mut l[(i * size)..], n - 1, m, pos + 1);
+	}
+}
+
+fn gen_array(n: usize, m: usize, size: &mut usize) -> Vec<String> {
+	*size = 1;
+	for i in 0..n {
+		*size *= m
+	}
+	let l: Vec<Vec<u8>> = Vec::new(); //make([][]byte, *size)
+	for i in 0..*size {
+		l[i] = Vec::new() //make([]byte, n)
+	}
+	let t0 = std::time::Instant::now();
+	permute(&mut l, n, m, 0);
+	let t1 = std::time::Instant::now();
+	println!("[info] permute: {} ns\n", (t1 - t0).as_nanos());
+	let result: Vec<String> = Vec::new(); //make([]string, *size)
+	for i in 0..*size {
+		result[i] = string(l[i])
+	}
+	return result
+}
+
+fn verify_array(l: Vec<String>) -> bool {
+	for i in 1..l.len() {
+		if l[i - 1] > l[i] {
+			return false
+		}
+	}
+	return true
+}
+
+fn main() {
+	let mut size = 0usize;
+	let t0 = std::time::Instant::now();
+	let l = gen_array(6, 18, &mut size);
+	let t1 = std::time::Instant::now();
+	imsort(l, 0, size);
+	let t2 = std::time::Instant::now();
+	println!("[info] gen_array: {} ns\n", (t1 - t0).as_nanos());
+	println!("[info] sort: {} ns\n", (t2 - t1).as_nanos());
+	assert(verify_array(l))
+}

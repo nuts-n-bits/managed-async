@@ -1,5 +1,9 @@
 #![allow(dead_code)]
 
+mod graph_benchmark_iterative; 
+mod langbench_sort;
+
+
 use std::{
     fs::File,
     io::{self, Write},
@@ -35,8 +39,8 @@ async fn process(mut socket: tokio::net::TcpStream) {
     loop {
         buf = [0u8; 1024];
         let read = socket.read_exact(&mut buf[..]).await;
-        dbg!(&read);
-        dbg!(std::str::from_utf8(&buf[..]));
+        //dbg!(&read);
+        //dbg!(std::str::from_utf8(&buf[..]));
 
         if read.unwrap_or(0) == 0 {
             socket.flush();
@@ -65,7 +69,7 @@ async fn run_client() {
         .await
         .unwrap();
     let write = stream.write("afrwahgreggreshtrshtrhtrdhtrdhtrhthtresdgtrhtrdhtrsh".as_bytes());
-    dbg!(write);
+    //dbg!(write);
 }
 
 const PI: f64 = 3.14;
