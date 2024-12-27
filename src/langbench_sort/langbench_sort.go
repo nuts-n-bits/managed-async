@@ -106,6 +106,7 @@ func gen_array(n int, m int, size *int) []string {
 	fmt.Printf("[info] permute: %v ns\n", t1.Sub(t0).Nanoseconds())
 	var result []string = make([]string, *size)
 	for i := 0; i < *size; i++ {
+		// fmt.Println(string(l[i]));
 		result[i] = string(l[i])
 	}
 	return result

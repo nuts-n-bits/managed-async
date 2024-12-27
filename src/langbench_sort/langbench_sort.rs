@@ -88,7 +88,7 @@ fn gen_array(n: usize, m: usize, size: &mut usize) -> Vec<String> {
 	for i in 0..n {
 		*size *= m
 	}
-	let l: Vec<Vec<u8>> = Vec::new(); //make([][]byte, *size)
+	let mut l: Vec<Vec<u8>> = Vec::new(); //make([][]byte, *size)
 	for i in 0..*size {
 		l[i] = Vec::new() //make([]byte, n)
 	}
@@ -96,9 +96,9 @@ fn gen_array(n: usize, m: usize, size: &mut usize) -> Vec<String> {
 	permute(&mut l, n, m, 0);
 	let t1 = std::time::Instant::now();
 	println!("[info] permute: {} ns\n", (t1 - t0).as_nanos());
-	let result: Vec<String> = Vec::new(); //make([]string, *size)
+	let mut result: Vec<String> = Vec::new(); //make([]string, *size)
 	for i in 0..*size {
-		result[i] = string(l[i])
+		result[i] = l[i].iter().map(|u8| *u8 as char).collect();
 	}
 	return result
 }
@@ -115,9 +115,9 @@ fn verify_array(l: Vec<String>) -> bool {
 fn main() {
 	let mut size = 0usize;
 	let t0 = std::time::Instant::now();
-	let l = gen_array(6, 18, &mut size);
+	let mut l = gen_array(6, 18, &mut size);
 	let t1 = std::time::Instant::now();
-	imsort(l, 0, size);
+	imsort(&mut l, 0, size);
 	let t2 = std::time::Instant::now();
 	println!("[info] gen_array: {} ns\n", (t1 - t0).as_nanos());
 	println!("[info] sort: {} ns\n", (t2 - t1).as_nanos());
