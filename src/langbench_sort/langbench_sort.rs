@@ -67,12 +67,12 @@ fn imsort(arr: &mut Vec<String>, lo: usize, hi: usize) {
 	}
 }
 
-fn permute(l: &mut Vec<Vec<u8>>, n: usize, m: usize, pos: usize) {
+fn permute(l: &mut [Vec<u8>], n: usize, m: usize, pos: usize) {
 	if n == 0 {
 		return;
 	}
-	let size = 1;
-	for i in 0..n-1 {
+	let mut size = 1;
+	for _i in 0..n-1 {
 		size *= m;
 	}
 	for i in 0..m {
@@ -85,7 +85,7 @@ fn permute(l: &mut Vec<Vec<u8>>, n: usize, m: usize, pos: usize) {
 
 fn gen_array(n: usize, m: usize, size: &mut usize) -> Vec<String> {
 	*size = 1;
-	for i in 0..n {
+	for _i in 0..n {
 		*size *= m
 	}
 	let mut l: Vec<Vec<u8>> = Vec::new(); //make([][]byte, *size)
@@ -112,7 +112,7 @@ fn verify_array(l: Vec<String>) -> bool {
 	return true
 }
 
-fn main() {
+pub fn main() {
 	let mut size = 0usize;
 	let t0 = std::time::Instant::now();
 	let mut l = gen_array(6, 18, &mut size);

@@ -1,8 +1,6 @@
 #![allow(dead_code)]
 
-mod graph_benchmark_iterative; 
 mod langbench_sort;
-
 
 use std::{
     fs::File,
@@ -17,6 +15,7 @@ async fn main() {
     let first_arg = argv.get(1).map(|s| s.as_str());
     match first_arg {
         Some("client") => run_client().await,
+        Some("sort") => langbench_sort::langbench_sort::main(),
         _ => run_server().await,
     }
 }
