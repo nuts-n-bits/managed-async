@@ -1,6 +1,8 @@
 #![allow(dead_code)]
 
 mod langbench_sort;
+mod langbench_log_parser;
+mod langbench_sudoku;
 
 use std::{
     fs::File,
@@ -16,6 +18,7 @@ async fn main() {
     match first_arg {
         Some("client") => run_client().await,
         Some("sort") => langbench_sort::langbench_sort::main(),
+        Some("sudoku") => langbench_sudoku::sudoku::main(),
         _ => run_server().await,
     }
 }
