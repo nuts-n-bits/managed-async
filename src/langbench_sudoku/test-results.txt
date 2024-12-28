@@ -3,6 +3,7 @@
 |                          Sudoku 64 input   Sudoku 4096 input     |
 |                        +-----------------+-------------------+   |
 | go|1-thrd              | 493ms  ~ 504ms  | 33430ms ~ 33862ms |   |
+| go|multhrd             |                 | 5413ms ~ 6084ms   |   |
 | rs|async --dbg 1-thrd  | 1971ms ~ 2044ms |                   |   |
 | rs|async --rel 1-thrd  | 243ms  ~ 264ms  | 15336ms ~ 16212ms |   |
 | rs|async --rel multhrd | 59ms   ~ 85ms   | 2502ms ~ 2523ms   |   |
