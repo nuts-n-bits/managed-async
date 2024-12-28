@@ -11,14 +11,15 @@ use std::{
 };
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
-#[tokio::main(flavor = "current_thread")]
+//#[tokio::main(flavor = "current_thread")]
+#[tokio::main]
 async fn main() {
     let argv = std::env::args().collect::<Vec<String>>();
     let first_arg = argv.get(1).map(|s| s.as_str());
     match first_arg {
         Some("client") => run_client().await,
         Some("sort") => langbench_sort::langbench_sort::main(),
-        Some("sudoku") => langbench_sudoku::sudoku::main(),
+        Some("sudoku") => langbench_sudoku::sudoku::main().await,
         _ => run_server().await,
     }
 }
