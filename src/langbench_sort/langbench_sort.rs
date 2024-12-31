@@ -1,7 +1,8 @@
 
 
 fn swap(arr: &mut Vec<String>, lo: usize, hi: usize) {
-    arr.swap(lo, hi);
+    //unsafe { core::ptr::swap(arr[lo].as_mut_ptr(), arr[hi].as_mut_ptr()); }
+	arr.swap(lo, hi);
 }
 
 fn wmerge(arr: &mut Vec<String>, mut lo1: usize, hi1: usize, mut lo2: usize, hi2: usize, mut w: usize) {
