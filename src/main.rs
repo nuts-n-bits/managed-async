@@ -19,6 +19,7 @@ async fn main() {
     match first_arg {
         Some("client") => run_client().await,
         Some("sort") => langbench_sort::langbench_sort::main(),
+        Some("sort-o") => langbench_sort::langbench_sort_opti::main(),
         Some("sudoku") => langbench_sudoku::sudoku::main().await,
         _ => run_server().await,
     }
