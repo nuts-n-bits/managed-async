@@ -1,5 +1,5 @@
 
-
+//#[inline(never)]
 fn swap(arr: &mut Vec<String>, lo: usize, hi: usize) {
     //unsafe { core::ptr::swap(arr[lo].as_mut_ptr(), arr[hi].as_mut_ptr()); }
 	arr.swap(lo, hi);

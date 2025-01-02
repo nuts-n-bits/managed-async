@@ -95,3 +95,20 @@ fn compute_average(buf: &[u8; 1024]) -> f64 {
     }
     return sum / 1024f64;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

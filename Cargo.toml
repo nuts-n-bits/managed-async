@@ -6,3 +6,6 @@ edition = "2021"
 [dependencies]
 sha2 = "0.10.8"
 tokio = { version = "1.41.1", features = ["full"] }
+
+[profile.release]
+debug = true
